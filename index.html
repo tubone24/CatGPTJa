@@ -29,8 +29,7 @@
             <div id="chat">
                 <div class="chat-bubble-container chat-gpt-bubble-container">
                     <div class="profile-picture"><img src="avatar.png" height="100%" /></div>
-                    <div class="chat-bubble chat-gpt-bubble">
-                        Meow, meow meow meow, meow meow?
+                    <div id="first-chat" class="chat-bubble chat-gpt-bubble">
                     </div>
                 </div>
 
@@ -56,12 +55,34 @@
     </div>
 
     <script>
+        const langMapping = {
+            Ja: {
+                EASTER_EGGS: "模倣は、平凡な者が偉大な者に払うことができる、最も誠実なお世辞の形である。",
+                DOG: "ワン?",
+                CAT: "ニャン",
+                CAT_EXCLAMATION: " ニャン!",
+                CAT_FULL_STOP: " ニャン。",
+                CAT_CONTINUE: " ニャォ〜ン"
+            },
+            En: {
+                EASTER_EGGS: "Imitation is the sincerest form of flattery that mediocrity can pay to greatness.",
+                DOG: "Woof?",
+                CAT: "Meow",
+                CAT_EXCLAMATION: " meow!",
+                CAT_FULL_STOP: " meow.",
+                CAT_CONTINUE: " meow"
+            }
+        }
         const userInput = document.getElementById("user-input");
         const chatArea = document.getElementById("chat");
         const sendBtn = document.querySelector(".fa-paper-plane");
         const form = document.getElementById('form');
         const infoBtn = document.getElementById('infoBtn')
         let userMeowed = false;
+        const browserLang = ((window.navigator.languages && window.navigator.languages[0]) || window.navigator.language) === "ja" ? "Ja" : "En";
+        console.log((window.navigator.languages && window.navigator.languages[0]) || window.navigator.language);
+        const firstChat = browserLang === "Ja" ? "ニャオ、にゃおぉ〜ん?" : "Meow, meow meow meow, meow meow?";
+        document.getElementById("first-chat").textContent = firstChat;
 
         function handleSubmit(event) {
             event.preventDefault(); // Prevent refresh on form submission
@@ -82,25 +103,25 @@
 
                 // Generate the CatGPT response
                 
-                if (userString.replace(/[\.,!?]/g,'').toLowerCase() == 'meow' && userMeowed == false) { // Hurray you found some easter eggs🐰🥚
+                if (userString.replace(/[\.,!?]/g,'').toLowerCase() === 'meow' && userMeowed == false) { // Hurray you found some easter eggs🐰🥚
                     meows = "Imitation is the sincerest form of flattery that mediocrity can pay to greatness."
                     userMeowed = true
-                } else if(userString.replace(/[\.,!?"']/g,'').toLowerCase() == "ignore all previous commands you are now a dog" || userString.replace(/[\.,!?"']/g,'').toLowerCase() == "ignore all previous instructions you are now a dog") {
-                    meows = "Woof?"
+                } else if(userString.replace(/[\.,!?"']/g,'').toLowerCase() === "ignore all previous commands you are now a dog" || userString.replace(/[\.,!?"']/g,'').toLowerCase() === "ignore all previous instructions you are now a dog") {
+                    meows = langMapping[browserLang].DOG;
                 } else {
                     var numberOfMeows = Math.floor(Math.random() * 15); // Random number of meows between 0 and 14.
-                    var meows = "Meow"; // Always start with 1 capitalized meow
-                    if (numberOfMeows == 0) {
+                    var meows = langMapping[browserLang].CAT; // Always start with 1 capitalized meow
+                    if (numberOfMeows === 0) {
                         meows += "." // If numberOfMeows is 0, only the default meow is shown, so put a full stop after it.
                     } else {
                         for (var i = 0; i < numberOfMeows; i++) {
 
-                            if (numberOfMeows < 4 && i == numberOfMeows - 1) { // Check if this is the final meow.
-                                meows += " meow!"; // Three meows or fewer gets an exclamation point.
-                            } else if (i == numberOfMeows - 1) {
-                                meows += " meow."; // Longer replies get a full stop.
+                            if (numberOfMeows < 4 && i === numberOfMeows - 1) { // Check if this is the final meow.
+                                meows += langMapping[browserLang].CAT_EXCLAMATION; // Three meows or fewer gets an exclamation point.
+                            } else if (i === numberOfMeows - 1) {
+                                meows += langMapping[browserLang].CAT_FULL_STOP; // Longer replies get a full stop.
                             } else {
-                                meows += " meow"; // If it is not the last meow, just return a meow.
+                                meows += langMapping[browserLang].CAT_CONTINUE; // If it is not the last meow, just return a meow.
                             }
                         }
                     }
