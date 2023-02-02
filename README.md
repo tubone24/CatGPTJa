@@ -1,4 +1,4 @@
-# CatGPT
+# CatGPTJa
 *What if ChatGPT were a cat?*
 
 ChatGPT is boring. I want a cat to answer my questions. So I built CatGPT!
